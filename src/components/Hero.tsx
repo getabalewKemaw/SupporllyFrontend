@@ -1,6 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import CanvasScene from "./CanvasScene";
-
 const Hero: React.FC = () => {
   return (
     <section className="relative w-full h-screen bg-black text-gray-100 flex items-center justify-center overflow-hidden">
@@ -14,12 +14,14 @@ const Hero: React.FC = () => {
           Turn customer questions into instant, context-aware answers. Attach images, get analysis, and keep full history.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#features"
-            className="bg-[#5032a8] text-white px-6 py-3 rounded-xl hover:opacity-90 transition font-medium"
+          {/* Route to Login */}
+          <Link
+            to="/login"
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl hover:opacity-90 transition font-medium"
           >
             Get Started
-          </a>
+          </Link>
+
           <a
             href="#about"
             className="text-gray-300 px-4 py-3 rounded-md border border-gray-700 hover:border-[#5032a8] hover:text-[#5032a8] transition font-medium"
