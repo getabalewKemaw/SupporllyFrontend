@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind utilities;
+
+/* Brand + Global */
+:root {
+  --brand: #5032a8;
+  --bg: #000000;
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: var(--bg);
+  color: #e5e5e5;
+  font-family: 'Inter', sans-serif;
+}
+
+.divider-bottom {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
