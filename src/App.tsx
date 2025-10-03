@@ -7,19 +7,36 @@ import HowItWork from './components/HowItWork';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import Button from './components/Button';
-const App:React.FC = () => {
+import Login from './pages/Login';
+import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+
+const App: React.FC = () => {
   return (
     <>
-  <Home/>
-  <About/>
- <Features/>
- <HowItWork/>
- <Testimonials/>
- <Contact/>
- <Footer/>
-<Button/>
+
+<AuthProvider>
+
+      <Routes>
+        <Route path="/" element={
+          <>
+          <Home />,
+          <About/>
+          <Features />,
+          <HowItWork />,
+          <Testimonials />,
+          <Contact />,
+          <Footer />
+          </>
+
+
+        } />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      </AuthProvider>
     </>
+
+
   )
 }
 export default App
