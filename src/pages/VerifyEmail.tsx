@@ -1,22 +1,47 @@
-
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function VerifyEmail() {
   const [message, setMessage] = useState("Verifying...");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    const verify = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
 
-    if (token) {
-      axios
-        .get(`http://localhost:5000/auth/verify-email?token=${token}`)
-        .then((res) => setMessage(res.data.message))
-        .catch(() => setMessage("Invalid or expired token"));
-    }
-  }, []);
+      if (!token) {
+        setMessage("❌ Token is missing.");
+        return;
+      }
 
-  return <h2>{message}</h2>;
+      try {
+        const res = await axios.get<{ success: boolean; message: string }>(
+          `http://localhost:5000/auth-local/verify-email?token=${token}`
+        );
+
+        if (res.data.success) {
+          setMessage("✅ Email verified successfully. Redirecting to login...");
+          setTimeout(() => navigate("/login"), 2000); // redirect after 2s
+        } else {
+          setMessage(res.data.message || "❌ Verification failed.");
+        }
+      } catch (error: unknown) {
+        const err = error as AxiosError<{ message: string }>;
+        setMessage(err.response?.data?.message || "❌ Invalid or expired token.");
+      }
+    };
+
+    verify();
+  }, [navigate]);
+
+  return (
+    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+      <div className="p-6 bg-gray-800 rounded-lg shadow-lg text-center">
+        <h1 className="text-2xl font-bold mb-4">Email Verification</h1>
+        <p>{message}</p>
+      </div>
+    </div>
+  );
 }
-
