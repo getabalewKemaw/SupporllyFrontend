@@ -8,6 +8,7 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Login from './pages/Login';
+import VerifyEmail from './pages/VerifyEmail';
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
 
         } />
         <Route path="/login" element={<Login />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
       </AuthProvider>
     </>
