@@ -19,7 +19,7 @@ const OAuthSuccess = () => {
           navigate("/login");
         }
       } catch {
-        navigate("/signin");
+        navigate("/login");
       }
     };
     fetchUser();

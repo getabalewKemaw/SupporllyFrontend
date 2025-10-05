@@ -75,3 +75,46 @@ export async function updateTicket(ticketId: string, title?: string, description
   const res = await fetch(`${API_BASE_URL}/tickets/${ticketId}`, getFetchOptions("PATCH", { title, description }));
   return res.json();
 }
+
+// Get all tickets for current user (chat history)
+export async function getUserTickets(page: number = 1, limit: number = 20): Promise<{ success: boolean; data: { tickets: { _id: string; title: string; description: string; status: string; priority: string; customerId: string; companyId: string | null; createdAt: string; updatedAt: string }[]; totalTickets: number; page: number; limit: number } }> {
+  const res = await fetch(`${API_BASE_URL}/tickets?page=${page}&limit=${limit}`, getFetchOptions());
+  
+  if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error("Authentication required. Please log in.");
+    }
+    throw new Error(`Failed to fetch tickets: ${res.statusText}`);
+  }
+  
+  return res.json();
+}
+
+// Get current user info
+export async function getCurrentUser(): Promise<{ success: boolean; user: { _id: string; name: string; email: string; role: string } }> {
+  const res = await fetch(`${API_BASE_URL}/auth-local/me`, getFetchOptions());
+
+  if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error("Authentication required. Please log in.");
+    }
+    throw new Error(`Failed to fetch user: ${res.statusText}`);
+  }
+
+  return await res.json();
+}
+
+
+
+
+
+// Logout user
+export async function logout(): Promise<{ success: boolean; message: string }> {
+  const res = await fetch(`${API_BASE_URL}/auth-local/logout`, getFetchOptions("POST"));
+  
+  if (!res.ok) {
+    throw new Error(`Failed to logout: ${res.statusText}`);
+  }
+  
+  return res.json();
+}

@@ -5,6 +5,7 @@
   scrollbar-width: thin;
 }
 
+/* Light scrollbar for light themes */
 .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
   border-radius: 0.375rem;
@@ -14,19 +15,37 @@
   background-color: #f3f4f6;
 }
 
+/* Dark scrollbar for dark themes */
+.scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+  border-radius: 0.375rem;
+}
+
+.scrollbar-track-gray-800::-webkit-scrollbar-track {
+  background-color: #1f2937;
+}
+
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
+  background-color: #4b5563;
   border-radius: 0.375rem;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af;
+  background-color: #6b7280;
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
-  background-color: #f3f4f6;
+  background-color: #1f2937;
+}
+
+/* Line clamp utility for text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

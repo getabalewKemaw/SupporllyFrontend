@@ -74,6 +74,13 @@ export function useChat(ticketId?: string, pollingInterval = 2000) {
     }
   }
 
+  // Function to refresh chat history (can be called from parent components)
+  async function refreshChatHistory() {
+    // This will be implemented to refresh the sidebar chat history
+    // For now, we'll just return a promise
+    return Promise.resolve();
+  }
+
   return { 
     messages, 
     loading, 
@@ -81,6 +88,7 @@ export function useChat(ticketId?: string, pollingInterval = 2000) {
     currentTicketId,
     handleSend, 
     createNewTicket,
-    setCurrentTicketId
+    setCurrentTicketId,
+    refreshChatHistory
   };
 }
