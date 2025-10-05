@@ -54,8 +54,10 @@ const SignUp: React.FC = () => {
         const data = await signup({ name: form.name, email: form.email, password: form.password });
         if (data.success) {
           setUser(data.user); // update auth context
-          navigate("/verify-email"); // redirect to home
+          navigate("/verify-email"); 
+   
         }
+        
       } catch (err: unknown) {
         console.error(err);
       }

@@ -1,20 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getCurrentUser, logout } from "../api/auth";
+import { AuthContext, type User } from "./AuthContext";  // import context and User type
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
 
-interface AuthContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  logoutUser: () => void;
-}
-export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -22,7 +13,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (data.success) setUser(data.user);
       } catch (err) {
         setUser(null);
-        console.log(err)
+        console.log(err);
       }
     };
     fetchUser();

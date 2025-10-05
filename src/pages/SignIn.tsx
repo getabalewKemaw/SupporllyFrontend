@@ -30,10 +30,19 @@ const SignIn: React.FC = () => {
       const data = await login(form);
       if (data.success) {
         setUser(data.user);
-        navigate("/"); // redirect to home
+        if(data.user.role=='admin'){
+          navigate("/dashboard/admin");
+        }
+        else if (data.user.role=="customer"){
+          navigate('/dashboard/user');
+        }
+        else{
+          navigate('/');
+        }
       }
-    } catch (err:any) {
-      alert(err.response?.data?.error || "Login failed");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { error?: string } } };
+      alert(error.response?.data?.error || "Login failed");
     }
   };
 
@@ -99,5 +108,4 @@ const SignIn: React.FC = () => {
     </form>
   );
 };
-
 export default SignIn;
