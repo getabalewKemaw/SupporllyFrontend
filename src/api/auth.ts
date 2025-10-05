@@ -9,6 +9,7 @@ export const login = async (data: { email: string; password: string }) => {
   return res.data;
 };
 
+
 export const getCurrentUser = async () => {
   const res = await axios.get(`${API_BASE}/auth-local/me`, { withCredentials: true });
   return res.data;
