@@ -12,18 +12,28 @@ export default function VerifyEmail() {
       const token = params.get("token");
 
       if (!token) {
-        setMessage("❌ Token is missing.");
+        setMessage("please check  your email and click on verfy email ")
+   
         return;
       }
 
       try {
-        const res = await axios.get<{ success: boolean; message: string }>(
-          `http://localhost:5000/auth-local/verify-email?token=${token}`
-        );
+        const res = await axios.get<{
+          success: boolean;
+          message: string;
+          user?: { role: string };
+        }>(`http://localhost:5000/auth-local/verify-email?token=${token}`);
 
         if (res.data.success) {
-          setMessage("✅ Email verified successfully. Redirecting to login...");
-          setTimeout(() => navigate("/login"), 2000); // redirect after 2s
+          setMessage("✅ Email verified successfully. Redirecting...");
+
+          setTimeout(() => {
+            if (res.data.user?.role === "admin") {
+              navigate("/dashboard/admin");
+            } else {
+              navigate("/dashboard/user");
+            }
+          }, 2000); // wait 2s before redirect
         } else {
           setMessage(res.data.message || "❌ Verification failed.");
         }
