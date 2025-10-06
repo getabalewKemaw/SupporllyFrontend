@@ -15,7 +15,7 @@ export default function Features() {
               Soportlly
             </span>
           </h2>
-          <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-2xl sm:text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
             Features designed to make AI-powered support fast, reliable, and interactive.
           </p>
         </div>

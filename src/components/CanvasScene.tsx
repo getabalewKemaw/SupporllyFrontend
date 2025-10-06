@@ -1,6 +1,5 @@
 "use client"
 
-// src/components/CanvasScene.tsx
 import type React from "react"
 import { Suspense, useRef } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
@@ -185,5 +184,4 @@ const CanvasScene: React.FC = () => {
     </Canvas>
   )
 }
-
 export default CanvasScene

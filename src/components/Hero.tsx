@@ -47,12 +47,12 @@ const Hero: React.FC = () => {
         <CanvasScene />
       </div>
 
-      <div className="z-10 text-center px-6 max-w-4xl relative">
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+      <div className="z-10 text-center px-6 py-10 max-w-4xl relative">
+        <h1 className="text-5xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
           <span className="text-white drop-shadow-2xl">Soportlly — </span>
           <span className="text-[#5032a8] drop-shadow-[0_0_30px_rgba(80,50,168,0.8)]">AI-powered support</span>
         </h1>
-        <p className="text-gray-200 text-base sm:text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
+        <p className="text-gray-200 text-lg sm:text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed drop-shadow-lg ">
           Turn customer questions into instant, context-aware answers. Attach images, get analysis, and keep full
           history.
         </p>

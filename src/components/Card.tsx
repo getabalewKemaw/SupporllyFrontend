@@ -62,7 +62,7 @@ export default function Card({ feature, index }: FeatureCardProps) {
           />
         </motion.div>
 
-        <h3 className="text-xl sm:text-2xl font-bold text-center mb-3 sm:mb-4 group-hover:bg-gradient-to-r group-hover:from-[#5032a8] group-hover:to-[#7a5af8] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">
+        <h3 className="text-3xl sm:text-2xl font-bold text-center mb-3 sm:mb-4 group-hover:bg-gradient-to-r group-hover:from-[#5032a8] group-hover:to-[#7a5af8] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">
           {feature.title}
         </h3>
 

@@ -1,11 +1,11 @@
 "use client";
+
 import { useState, useRef } from "react";
 import { Icon } from "@iconify/react";
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: "icon" | "default";
-}
+import axios from "axios";
+import { refreshAccessToken } from "../api/auth"; // you added this already in auth.ts
 
-function Button({ size = "default", className, children, ...props }: ButtonProps) {
+function Button({ size = "default", className, children, ...props }: any) {
   const base = "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
   const sizeClass = size === "icon" ? "p-2" : "px-4 py-2";
   return (
@@ -26,6 +26,8 @@ interface ChatInputProps {
   sending?: boolean;
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+
 export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -41,16 +43,27 @@ export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps)
     }
   };
 
+  const doUpload = async (formData: FormData) => {
+    // helper to post the form (returns axios response or throws)
+    return await axios.post(
+      `${API_BASE}/api/tickets/${ticketId}/attachments`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
 
-    // Show preview
     const previewUrl = URL.createObjectURL(file);
     setImagePreview(previewUrl);
 
-    // Upload file to backend
     const formData = new FormData();
     formData.append("file", file);
     formData.append("relatedModel", "Ticket");
@@ -58,29 +71,50 @@ export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps)
 
     try {
       setUploading(true);
-      const token = localStorage.getItem("token");
 
-      const res = await fetch(`http://localhost:5000/api/tickets/${ticketId}/attachments`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        console.log("✅ Uploaded:", data.data);
-        // Optionally call parent hook to reload messages
-      } else {
-       
-        console.log("Sending token:", token);
+      // First try upload
+      try {
+        const res = await doUpload(formData);
+        if (res.data?.success) {
+          console.log("✅ Uploaded:", res.data.data);
+          // Optionally notify parent
+        } else {
+          console.warn("Upload responded but success=false", res.data);
+        }
+      } catch (err: any) {
+        // If unauthorized, try refresh and retry once
+        if (err.response?.status === 401) {
+          console.warn("Upload got 401 — attempting token refresh");
+          const refreshed = await refreshAccessToken();
+          if (refreshed?.success) {
+            // retry
+            try {
+              const retry = await doUpload(formData);
+              if (retry.data?.success) {
+                console.log("✅ Uploaded after refresh:", retry.data.data);
+              } else {
+                console.log("Upload after refresh failed:", retry.data);
+              }
+            } catch (retryErr) {
+              console.error("Retry upload failed:", retryErr);
+              // optionally prompt login
+            }
+          } else {
+            console.warn("Refresh failed — user likely must login again");
+            // Optionally redirect to login or show toast
+          }
+        } else {
+          console.error("Upload error:", err);
+        }
       }
-    } catch (err) {
-      console.error("Upload error:", err);
     } finally {
       setUploading(false);
+      // clear preview and revoke object URL to avoid leaks
       setImagePreview(null);
+      try {
+        URL.revokeObjectURL(previewUrl);
+      } catch {console.warn("Failed to revoke object URL");}
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -103,7 +137,6 @@ export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps)
               }}
             />
 
-            {/* Upload Button */}
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -114,7 +147,6 @@ export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps)
               <Icon icon={uploading ? "mdi:loading" : "mdi:paperclip"} className={`h-5 w-5 ${uploading ? "animate-spin" : ""}`} />
             </button>
 
-            {/* Hidden file input */}
             <input
               type="file"
               accept="image/*"
@@ -142,7 +174,6 @@ export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps)
         </div>
       </form>
 
-      {/* Image preview */}
       {imagePreview && (
         <div className="mt-3 flex items-center gap-3">
           <img

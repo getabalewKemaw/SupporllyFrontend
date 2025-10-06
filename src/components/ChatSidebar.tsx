@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useContext } from "react";
 import { Icon } from "@iconify/react";
-import { getUserTickets, logout } from "../api/chatApi";
-import { getCurrentUser} from "../api/auth"
+import { getUserTickets } from "../api/chatApi";
+import { getCurrentUser,logout} from "../api/auth"
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 interface ChatHistory {
