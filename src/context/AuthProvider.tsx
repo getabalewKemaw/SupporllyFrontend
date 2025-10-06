@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
+import axios  from "axios";
 import { getCurrentUser, logout, refreshAccessToken } from "../api/auth";
 import { AuthContext, type User } from "./AuthContext";
 
@@ -7,7 +7,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🚀 Initial Auth Check on App Load
+
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -17,24 +17,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else {
           setUser(null);
         }
-      } catch (err: AxiosError) {
-        // Try refresh if access token expired
-        if (err.response?.status === 401) {
-          const refreshed = await refreshAccessToken();
-          if (refreshed?.success) {
-            const retry = await getCurrentUser();
-            if (retry.success) setUser(retry.user);
-            else setUser(null);
-          } else {
-            setUser(null);
-          }
-        } else {
-          console.error("Error checking auth:", err);
-          setUser(null);
-        }
-      } finally {
-        setLoading(false);
+      } catch (error) {
+  if (axios.isAxiosError(error)) {
+    if (error.response?.status === 401) {
+      const refreshed = await refreshAccessToken();
+      if (refreshed?.success) {
+        const retry = await getCurrentUser();
+        if (retry.success) setUser(retry.user);
+        else setUser(null);
+      } else {
+        setUser(null);
       }
+    } else {
+      console.error("Axios error checking auth:", error);
+      setUser(null);
+    }
+  } else {
+    console.error("Unknown error checking auth:", error);
+    setUser(null);
+  }
+} finally {
+  setLoading(false);
+}
     };
     initAuth();
   }, []);

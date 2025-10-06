@@ -1,6 +1,6 @@
 import { type Message } from "../types/chat";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://supportllyai.onrender.com/api";
 
 // Create headers for cookie-based authentication
 function getHeaders(): HeadersInit {

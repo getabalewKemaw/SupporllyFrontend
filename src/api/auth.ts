@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE || "https://supportllyai.onrender.com";
 export const signup = async (data: { name: string; email: string; password: string }) => {
   const res = await axios.post(`${API_BASE}/auth-local/signup`, data, { withCredentials: true });
   return res.data;
