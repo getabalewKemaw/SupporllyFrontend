@@ -39,7 +39,7 @@ export default function Navbar() {
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-[#5032a8] to-[#7a5af8] flex items-center justify-center shadow-lg shadow-purple-500/30">
             <Icon icon="mdi:robot-happy" className="text-white text-xl sm:text-2xl" />
           </div>
-          <span className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
+          <span className="text-2xl sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
             Soportlly
           </span>
         </motion.div>
@@ -75,6 +75,43 @@ export default function Navbar() {
 
         {/* CTA Desktop */}
         <div className="hidden md:flex items-center gap-3">
+                      <div className="px-4 sm:px-6 py-4">
+              <ul className="flex flex-col gap-3">
+                {navLinks.map((link, index) => (
+                  <motion.li
+                    key={link.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <a
+                      href={`#${link.id}`}
+                      onClick={() => {
+                        setActive(link.id)
+                        setMenuOpen(false)
+                      }}
+                      className={`block text-sm py-2 px-3 rounded-lg transition-all duration-300 ${
+                        active === link.id
+                          ? "text-[#7a5af8] bg-purple-500/10 font-semibold"
+                          : "text-gray-300 hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      {link.label}
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+
+              {/* Mobile CTA */}
+              <div className="mt-4 flex flex-col gap-3">
+                <button className="bg-transparent text-gray-300 px-4 py-2.5 rounded-lg hover:text-white hover:bg-white/5 transition-all duration-300 text-sm font-medium border border-white/10">
+                  Login
+                </button>
+                <button className="bg-gradient-to-r from-[#5032a8] to-[#7a5af8] text-white px-4 py-2.5 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-medium shadow-lg shadow-purple-500/30">
+                  Get Started
+                </button>
+              </div>
+            </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -82,6 +119,8 @@ export default function Navbar() {
           >
             Login
           </motion.button>
+
+
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(122, 90, 248, 0.4)" }}
             whileTap={{ scale: 0.95 }}

@@ -23,3 +23,16 @@ export const logout = async () => {
 export const googleLogin = () => {
   window.location.href = `${API_BASE}/auth/google`; // redirect to backend Google OAuth
 };
+
+
+// 🔥 NEW: use your /session/refresh route
+export const refreshAccessToken = async () => {
+  try {
+    const res = await axios.post(`${API_BASE}/session/refresh`, {}, { withCredentials: true });
+    return res.data;
+  } catch (err) {
+    console.error("Token refresh failed:", err);
+    return null;
+  }
+};
+

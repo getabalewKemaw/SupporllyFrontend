@@ -74,7 +74,7 @@ const About: React.FC = () => {
             <span className="text-[#5032a8] drop-shadow-[0_0_30px_rgba(80,50,168,0.8)]">Soportlly</span>
           </motion.h2>
           <motion.p
-            className="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed"
+            className="text-gray-300 text-2xl max-w-2xl mx-auto leading-relaxed "
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -131,12 +131,12 @@ const About: React.FC = () => {
                 </motion.div>
 
                 {/* Title with gradient on hover */}
-                <h3 className="text-xl md:text-2xl font-bold text-center mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#5032a8] group-hover:to-[#7c3aed] transition-all duration-500">
+                <h3 className="text-4xl md:text-3xl font-bold text-center mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#5032a8] group-hover:to-[#7c3aed] transition-all duration-500">
                   {item.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-400 text-center leading-relaxed group-hover:text-gray-300 transition-colors duration-500">
+                <p className="text-gray-400 text-center leading-relaxed group-hover:text-gray-300 transition-colors duration-500 text-2xl">
                   {item.description}
                 </p>
 

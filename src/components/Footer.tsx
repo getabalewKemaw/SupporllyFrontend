@@ -1,13 +1,12 @@
 "use client"
-
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
 import { footerLinks, socialLinks, footerNote } from "../constants/footer"
-
 export default function Footer() {
   return (
     <footer className="relative bg-black border-t border-white/10 overflow-hidden">
       {/* Animated Divider */}
+      
       <div className="relative">
         <motion.div
           className="h-px bg-gradient-to-r from-transparent via-[#5032a8] to-transparent"

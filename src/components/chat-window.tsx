@@ -1,18 +1,47 @@
 import { type Message } from "../types/chat";
 import ChatMessage from "./chat-message";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 
 export default function ChatWindow({ messages }: { messages: Message[] }) {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
-  // Auto-scroll to bottom when new messages arrive
+  const handleScroll = () => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+    const nearBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 50;
+    setIsAtBottom(nearBottom);
+  };
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = chatContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      // Initial check
+      handleScroll();
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isAtBottom) {
+      chatContainerRef.current?.scrollTo({
+        top: chatContainerRef.current?.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-gray-900 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+    <div 
+      ref={chatContainerRef}
+      className="flex-1 overflow-y-auto bg-gray-900 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
+    >
       {messages.length === 0 ? (
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
@@ -24,14 +53,14 @@ export default function ChatWindow({ messages }: { messages: Message[] }) {
           </div>
         </div>
       ) : (
-        <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="max-w-4xl mx-auto px-4 py-6 flex flex-col min-h-full">
+          <div className="flex-grow" />
           {messages.map((msg, index) => (
             <ChatMessage 
               key={`${msg._id}-${msg.createdAt}-${index}`} 
               message={msg} 
             />
           ))}
-          <div ref={messagesEndRef} />
         </div>
       )}
     </div>
