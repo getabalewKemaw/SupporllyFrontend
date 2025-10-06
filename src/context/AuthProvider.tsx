@@ -7,7 +7,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🚀 Initial Auth Check on App Load
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -18,28 +17,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(null);
         }
       } catch (error) {
-  if (axios.isAxiosError(error)) {
-    if (error.response?.status === 401) {
-      const refreshed = await refreshAccessToken();
-      if (refreshed?.success) {
-        const retry = await getCurrentUser();
-        if (retry.success) setUser(retry.user);
-        else setUser(null);
-      } else {
-        setUser(null);
-      }
-    } else {
-      console.error("Axios error checking auth:", error);
-      setUser(null);
-    }
-  } else {
-    console.error("Unknown error checking auth:", error);
-    setUser(null);
-  }
-} finally {
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            const refreshed = await refreshAccessToken();
+            if (refreshed?.success) {
+              const retry = await getCurrentUser();
+              if (retry.success) setUser(retry.user);
+              else setUser(null);
+            } else {
+              setUser(null);
+            }
+          } else {
+            console.error("Axios error checking auth:", error);
+            setUser(null);
+          }
+        } else {
+          console.error("Unknown error checking auth:", error);
+          setUser(null);
+        }
+      } finally {
         setLoading(false);
       }
     };
+
     initAuth();
   }, []);
 
