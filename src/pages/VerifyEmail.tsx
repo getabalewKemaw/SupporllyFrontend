@@ -22,7 +22,7 @@ export default function VerifyEmail() {
           success: boolean;
           message: string;
           user?: { role: string };
-        }>(`https://supportllyai.onrender.com/auth-local/verify-email?token=${token}`);
+        }>(`http://localhost:10000/auth-local/verify-email?token=${token}`);
 
         if (res.data.success) {
           setMessage("✅ Email verified successfully. Redirecting...");
