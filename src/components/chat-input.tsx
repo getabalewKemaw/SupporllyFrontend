@@ -26,7 +26,7 @@ interface ChatInputProps {
   sending?: boolean;
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE || "https://supportllyai.onrender.com";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:10000";
 
 export function ChatInput({ onSend, ticketId, sending = false }: ChatInputProps) {
   const [message, setMessage] = useState("");

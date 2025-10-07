@@ -59,7 +59,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   if (loading) {
     return <div className="text-white text-center mt-10">Loading...</div>;
   }
-
   return (
     <AuthContext.Provider value={{ user, setUser, logoutUser }}>
       {children}
