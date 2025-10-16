@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function VerifyEmail() {
   const [message, setMessage] = useState("Verifying...");
   const navigate = useNavigate();
+  const API_BASE = (import.meta as unknown as { env: { VITE_API_BASE?: string } }).env.VITE_API_BASE || "https://customer-ai-assistant.onrender.com";
 
   useEffect(() => {
     const verify = async () => {
@@ -12,8 +13,7 @@ export default function VerifyEmail() {
       const token = params.get("token");
 
       if (!token) {
-        setMessage("please check  your email and click on verfy email ")
-   
+        setMessage("Please check your email and click on the verification link.");
         return;
       }
 
@@ -22,18 +22,13 @@ export default function VerifyEmail() {
           success: boolean;
           message: string;
           user?: { role: string };
-        }>(`http://localhost:10000/auth-local/verify-email?token=${token}`);
+        }>(`${API_BASE}/auth-local/verify-email?token=${token}`, { withCredentials: true });
 
         if (res.data.success) {
-          setMessage("✅ Email verified successfully. Redirecting...");
-
+          setMessage("✅ Email verified successfully. Redirecting to login...");
           setTimeout(() => {
-            if (res.data.user?.role === "admin") {
-              navigate("/dashboard/admin");
-            } else {
-              navigate("/dashboard/user");
-            }
-          }, 2000); // wait 2s before redirect
+            navigate("/login");
+          }, 2000);
         } else {
           setMessage(res.data.message || "❌ Verification failed.");
         }
@@ -44,7 +39,7 @@ export default function VerifyEmail() {
     };
 
     verify();
-  }, [navigate]);
+  }, [navigate, API_BASE]);
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
