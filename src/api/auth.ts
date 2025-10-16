@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:10000";
+const API_BASE = import.meta.env.VITE_API_BASE || "https://customer-ai-assistant.onrender.com";
 export const signup = async (data: { name: string; email: string; password: string }) => {
   const res = await axios.post(`${API_BASE}/auth-local/signup`, data, { withCredentials: true });
   return res.data;
@@ -25,7 +25,6 @@ export const googleLogin = () => {
 };
 
 
-// 🔥 NEW: use your /session/refresh route
 export const refreshAccessToken = async () => {
   try {
     const res = await axios.post(`${API_BASE}/session/refresh`, {}, { withCredentials: true });
