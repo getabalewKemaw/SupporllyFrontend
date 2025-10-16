@@ -24,7 +24,6 @@ const OAuthSuccess = () => {
     };
     fetchUser();
   }, []);
-
   return (
     <div className="flex items-center justify-center h-screen text-white bg-gray-900">
       <p>Logging you in with Google...</p>
